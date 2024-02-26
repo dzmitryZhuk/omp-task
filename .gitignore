@@ -1,3 +1,17 @@
+.vscode/
+CMakeFiles/
+*.vcxproj
+*.vcxproj.filters
+*.cmake
+*.sln
+CMakeCache.txt
+x64/
+x32/
+*/Debug/
+*/Release/
+*/compiller.dir/
+.DS_Store
+
 # Prerequisites
 *.d
 
