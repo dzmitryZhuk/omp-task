@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
   , canvas_(new Canvas{this})
 {
     addToolBar(Qt::TopToolBarArea, toolPanel_);
+    toolPanel_->setMovable(false);
 }
 
 MainWindow::~MainWindow()
