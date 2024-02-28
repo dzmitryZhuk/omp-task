@@ -1,8 +1,11 @@
 #pragma once
 
+#include <QToolBar>
+
 class ToolPanel
+  : public QToolBar
 {
 public:
-  ToolPanel(/* args */);
-  ~ToolPanel();
+  explicit ToolPanel(QWidget *parent = nullptr);
+  virtual ~ToolPanel();
 };
