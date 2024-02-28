@@ -3,11 +3,11 @@
 #include "Figure.h"
 #include "Connection.h"
 
-#include <QWidget>
+#include <QScrollArea>
 #include <QList>
 
 class Canvas
-  : public QWidget
+  : public QScrollArea
 {
 public:
   explicit Canvas(QWidget *parent = nullptr);
