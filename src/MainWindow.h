@@ -3,12 +3,16 @@
 #include "Canvas.h"
 #include "ToolPanel.h"
 
+#include <QMainWindow>
+
 class MainWindow
+  : public QMainWindow
 {
+  Q_OBJECT
 public:
-  MainWindow(/* args */);
-  ~MainWindow();
+  explicit MainWindow(QWidget *parent = nullptr);
+  virtual ~MainWindow();
 protected:
-  Canvas canvas_;
-  ToolPanel toolPanel_;
+  Canvas *canvas_;
+  ToolPanel *toolPanel_;
 };
