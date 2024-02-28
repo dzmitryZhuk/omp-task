@@ -4,7 +4,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui Widgets)
 
 file(GLOB SOURCES "*.cpp")
 
@@ -14,7 +15,7 @@ add_executable(${PROJECT_NAME}
     ${SOURCES}
     )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE -static
+target_link_libraries(${PROJECT_NAME} PRIVATE
                             Qt5::Widgets
                             Qt5::Core
                             Qt5::Gui)
