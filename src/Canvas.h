@@ -1,8 +1,11 @@
 #pragma once
 
+#include <QWidget>
+
 class Canvas
+  : public QWidget
 {
 public:
-  Canvas(/* args */);
-  ~Canvas();
+  explicit Canvas(QWidget *parent = nullptr);
+  virtual ~Canvas();
 };
