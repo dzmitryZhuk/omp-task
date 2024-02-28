@@ -2,13 +2,15 @@
 
 #include "Figure.h"
 
+#include <QRectF>
+
 class Rectangle
   : public Figure
 {
   Q_OBJECT
 public:
-  Rectangle(/* args */);
-  ~Rectangle();
+  Rectangle(QObject *parent = nullptr);
+  virtual ~Rectangle();
 private:
   QRectF rect;
 };
