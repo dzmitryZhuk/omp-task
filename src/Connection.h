@@ -2,7 +2,8 @@
 
 #include <QObject>
 
-class Connection : public QObject
+class Connection
+  : public QObject
 {
   Q_OBJECT
 public:
