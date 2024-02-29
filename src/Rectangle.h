@@ -9,7 +9,7 @@ class Rectangle
 {
   Q_OBJECT
 public:
-  Rectangle(QObject *parent = nullptr);
+  explicit Rectangle(QObject *parent = nullptr);
   virtual ~Rectangle();
 private:
   QRectF rect;
