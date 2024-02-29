@@ -11,6 +11,10 @@ class Rectangle
 public:
   explicit Rectangle(QObject *parent = nullptr);
   virtual ~Rectangle();
+
+  virtual void draw(QPainter *painter) override;
+  virtual void move(double dx, double dy) override;
+  virtual bool contains(const QPointF &point) const override;
 private:
-  QRectF rect;
+  QRectF rect_;
 };
