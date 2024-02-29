@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Figure.h"
+#include "Figures/Figure.h"
 #include "Connection.h"
 
 #include <QScrollArea>
