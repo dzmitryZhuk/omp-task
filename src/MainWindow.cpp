@@ -1,6 +1,8 @@
 #include "MainWindow.h"
+#include "Logger.h"
 
 #include <QMessageBox>
+#include <QAction>
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
@@ -10,6 +12,10 @@ MainWindow::MainWindow(QWidget *parent)
   // tool panel initialization
   addToolBar(Qt::TopToolBarArea, toolPanel_);
   toolPanel_->setMovable(false);
+
+  connect(toolPanel_, &ToolPanel::actionTriggered, [this](QAction *action){
+    Logger::log("Tool panel action <" + action->text().toStdString() + "> triggered");
+  });
 
   // canvas initialization
   setCentralWidget(canvas_);
