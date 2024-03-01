@@ -13,12 +13,24 @@ MainWindow::MainWindow(QWidget *parent)
   addToolBar(Qt::TopToolBarArea, toolPanel_);
   toolPanel_->setMovable(false);
 
-  connect(toolPanel_, &ToolPanel::actionTriggered, [this](QAction *action){
-    Logger::log("Tool panel action <" + action->text().toStdString() + "> triggered");
-  });
-
   // canvas initialization
   setCentralWidget(canvas_);
+
+  connect(toolPanel_, &ToolPanel::actionTriggered, [this](QAction *action){
+    Logger::log("Tool panel action <" + action->text().toStdString() + "> triggered");
+    if (action->text().compare(tr("Rectangle")))
+    {
+      this->canvas_->setRectangleDrawingAction();
+    } else
+    if (action->text().compare(tr("Triangle")))
+    {
+      this->canvas_->setTriangleDrawingAction();
+    } else
+    if (action->text().compare(tr("Ellipse")))
+    {
+      this->canvas_->setEllipseDrawingAction();
+    }
+  });
 }
 
 MainWindow::~MainWindow()
