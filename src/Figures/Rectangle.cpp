@@ -5,6 +5,12 @@ Rectangle::Rectangle(QObject *parent)
 {
 }
 
+Rectangle::Rectangle(const QPointF &first, const QPointF &second, QObject *parent)
+  : Figure(first, second, parent)
+{
+  boundingRect_ = QRectF{first, second};
+}
+
 Rectangle::~Rectangle()
 {
 }
@@ -23,4 +29,9 @@ void Rectangle::move(double dx, double dy)
 bool Rectangle::contains(const QPointF &point) const
 {
   return rect_.contains(point);
+}
+
+void Rectangle::setSecondPoint(const QPointF &point)
+{
+  boundingRect_.setBottomRight(point);
 }
