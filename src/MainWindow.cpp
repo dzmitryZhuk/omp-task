@@ -18,15 +18,15 @@ MainWindow::MainWindow(QWidget *parent)
 
   connect(toolPanel_, &ToolPanel::actionTriggered, [this](QAction *action){
     Logger::log("Tool panel action <" + action->text().toStdString() + "> triggered");
-    if (action->text().compare(tr("Rectangle")))
+    if (action->text().compare(tr("Rectangle")) == 0)
     {
       this->canvas_->setRectangleDrawingAction();
     } else
-    if (action->text().compare(tr("Triangle")))
+    if (action->text().compare(tr("Triangle")) == 0)
     {
       this->canvas_->setTriangleDrawingAction();
     } else
-    if (action->text().compare(tr("Ellipse")))
+    if (action->text().compare(tr("Ellipse")) == 0)
     {
       this->canvas_->setEllipseDrawingAction();
     }
