@@ -31,6 +31,11 @@ bool Rectangle::contains(const QPointF &point) const
   return rect_.contains(point);
 }
 
+void Rectangle::setFirstPoint(const QPointF &point)
+{
+  boundingRect_.setTopLeft(point);
+}
+
 void Rectangle::setSecondPoint(const QPointF &point)
 {
   boundingRect_.setBottomRight(point);

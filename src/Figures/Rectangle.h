@@ -16,6 +16,7 @@ public:
   virtual void draw(QPainter *painter) override;
   virtual void move(double dx, double dy) override;
   virtual bool contains(const QPointF &point) const override;
+  virtual void setFirstPoint(const QPointF &point) override;
   virtual void setSecondPoint(const QPointF &point) override;
 private:
   QRectF rect_;
