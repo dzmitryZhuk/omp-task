@@ -1,6 +1,5 @@
 #include "Triangle.h"
-
-#include <QtMath>
+#include "../Logger.h"
 
 Triangle::Triangle(QObject *parent)
   : Figure{parent}
@@ -53,10 +52,10 @@ void Triangle::setSecondPoint(const QPointF &point)
   countVertices();
 }
 
-void Triangle::countVertices()
+void Triangle::calculateVertices()
 {
   p1_ = boundingRect_.bottomLeft();
   p3_ = boundingRect_.bottomRight();
-  auto middle = (boundingRect_.right() - boundingRect_.left());
-  p2_ = QPointF{boundingRect_.top(), middle};
+  auto middle = (boundingRect_.right() - boundingRect_.left()) / 2 + boundingRect_.left();
+  p2_ = QPointF{middle, boundingRect_.top()};
 }

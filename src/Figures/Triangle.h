@@ -19,7 +19,7 @@ public:
   virtual void setSecondPoint(const QPointF &point) override;
 
 protected slots:
-  void countVertices();
+  void calculateVertices();
 
 private:
   QPointF p1_;
