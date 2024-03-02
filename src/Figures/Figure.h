@@ -12,6 +12,7 @@ class Figure
 public:
   explicit Figure(QObject *parent = nullptr);
   Figure(const QPointF &first, const QPointF &second, QObject *parent = nullptr);
+  Figure(const QRectF &boundingRect, QObject *parent = nullptr);
   virtual ~Figure();
 
   virtual void draw(QPainter *painter) = 0;

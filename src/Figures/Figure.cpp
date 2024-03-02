@@ -11,6 +11,12 @@ Figure::Figure(const QPointF &first, const QPointF &second, QObject *parent)
 {
 }
 
+Figure::Figure(const QRectF &boundingRect, QObject *parent)
+    : QObject(parent)
+    , boundingRect_(boundingRect)
+{
+}
+
 Figure::~Figure()
 {
 }
