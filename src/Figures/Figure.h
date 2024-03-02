@@ -17,8 +17,9 @@ public:
   virtual void draw(QPainter *painter) = 0;
   virtual void move(double dx, double dy) = 0;
   virtual bool contains(const QPointF &point) const = 0;
-  virtual void setFirstPoint(const QPointF &point) = 0;
-  virtual void setSecondPoint(const QPointF &point) = 0;
+  virtual void setFirstPoint(const QPointF &point);
+  virtual void setSecondPoint(const QPointF &point);
 protected:
   QRectF boundingRect_;
+  // id = last time used        // TODO: realize id of figure
 };

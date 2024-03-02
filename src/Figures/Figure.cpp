@@ -14,3 +14,13 @@ Figure::Figure(const QPointF &first, const QPointF &second, QObject *parent)
 Figure::~Figure()
 {
 }
+
+void Figure::setFirstPoint(const QPointF &point)
+{
+  boundingRect_.setTopLeft(point);
+}
+
+void Figure::setSecondPoint(const QPointF &point)
+{
+  boundingRect_.setBottomRight(point);
+}
