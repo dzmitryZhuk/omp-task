@@ -1,16 +1,15 @@
 #include "Triangle.h"
 
+#include <QtMath>
+
 Triangle::Triangle(QObject *parent)
   : Figure{parent}
 {
 }
 
-Triangle::Triangle(const QPointF &p1, const QPointF &p2, const QPointF &p3, QObject *parent)
-  : Figure{parent}
-  , p1_(p1)
-  , p2_(p2)
-  , p3_(p3)
+Triangle::Triangle(const QPointF &first, const QPointF &second, QObject *parent)
 {
+  boundingRect_ = QRectF{first, second};
 }
 
 Triangle::~Triangle()
@@ -40,4 +39,24 @@ bool Triangle::contains(const QPointF &point) const
   QPolygonF polygon;
   polygon << p1_ << p2_ << p3_;
   return polygon.containsPoint(point, Qt::OddEvenFill);
+}
+
+void Triangle::setFirstPoint(const QPointF &point)
+{
+  boundingRect_.setTopLeft(point);
+  countVertices();
+}
+
+void Triangle::setSecondPoint(const QPointF &point)
+{
+  boundingRect_.setBottomRight(point);
+  countVertices();
+}
+
+void Triangle::countVertices()
+{
+  p1_ = boundingRect_.bottomLeft();
+  p3_ = boundingRect_.bottomRight();
+  auto middle = (boundingRect_.right() - boundingRect_.left());
+  p2_ = QPointF{boundingRect_.top(), middle};
 }
