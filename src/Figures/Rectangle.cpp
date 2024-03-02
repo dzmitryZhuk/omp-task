@@ -1,4 +1,7 @@
 #include "Rectangle.h"
+#include "../Logger.h"
+
+#include <QString>
 
 Rectangle::Rectangle(QObject *parent)
   : Figure(parent)
@@ -17,26 +20,26 @@ Rectangle::~Rectangle()
 
 void Rectangle::draw(QPainter *painter)
 {
-  painter->drawRect(rect_);
+  painter->drawRect(boundingRect_);
+
+  auto x = QString::number(boundingRect_.x());
+  auto y = QString::number(boundingRect_.y());
+  auto width = QString::number(boundingRect_.width());
+  auto height = QString::number(boundingRect_.height());
+  Logger::log("Rectangle " /*+ id*/ +                       // TODO: realize id
+                        x.toStdString() + " " +
+                        y.toStdString() + " " +
+                        width.toStdString() + " " +
+                        height.toStdString() + " ");
 }
 
 void Rectangle::move(double dx, double dy)
 {
-  rect_.translate(dx, dy);
+  boundingRect_.translate(dx, dy);
   // draw
 }
 
 bool Rectangle::contains(const QPointF &point) const
 {
-  return rect_.contains(point);
-}
-
-void Rectangle::setFirstPoint(const QPointF &point)
-{
-  boundingRect_.setTopLeft(point);
-}
-
-void Rectangle::setSecondPoint(const QPointF &point)
-{
-  boundingRect_.setBottomRight(point);
+  return boundingRect_.contains(point);
 }
