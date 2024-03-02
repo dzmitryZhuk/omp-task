@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
       this->canvas_->setEllipseDrawingAction();
     }
   });
+
+  setFixedSize(900,600);
 }
 
 MainWindow::~MainWindow()
