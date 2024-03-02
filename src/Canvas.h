@@ -7,7 +7,7 @@
 #include <QList>
 
 class Canvas
-  : public QScrollArea
+  : public QWidget/*QScrollArea*/
 {
   Q_OBJECT
 public:

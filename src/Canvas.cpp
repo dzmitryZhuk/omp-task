@@ -10,7 +10,7 @@
 #include <QBrush>
 
 Canvas::Canvas(QWidget *parent)
-  : QScrollArea(parent)
+  : QWidget/*QScrollArea*/(parent)
   , currentFigure_(nullptr)
   , currentAction_(Action::Nothing)
 {
@@ -24,28 +24,22 @@ Canvas::~Canvas()
 void Canvas::setRectangleDrawingAction()
 {
   currentAction_ = Action::DrawRectangle;
-  setFigureDrawing();
+  setFigureDrawing(true);
   Logger::log("Canvas setting rectangle drawing action");
-  currentFigure_ = new Rectangle{};
-  Logger::log("Canvas new Rectangle");
 }
 
 void Canvas::setTriangleDrawingAction()
 {
   currentAction_ = Action::DrawTriange;
-  setFigureDrawing();
+  setFigureDrawing(true);
   Logger::log("Canvas setting triangle drawing action");
-  // currentFigure_ = new Triangle{};
-  // Logger::log("Canvas new Triangle");
 }
 
 void Canvas::setEllipseDrawingAction()
 {
   currentAction_ = Action::DrawEllipse;
-  setFigureDrawing();
+  setFigureDrawing(true);
   Logger::log("Canvas setting ellipse drawing action");
-  // currentFigure_ = new Ellipse{};
-  // Logger::log("Canvas new Ellipse");
 }
 
 void Canvas::setFigureDrawing(bool enable)
@@ -58,22 +52,33 @@ void Canvas::mousePressEvent(QMouseEvent *event)
   QString xString = QString::number(event->pos().x());
   QString yString = QString::number(event->pos().y());
   Logger::log("Canvas mouse press event at <" + xString.toStdString() + "> <" + yString.toStdString() + ">");
+
   if (isFigureDrawingNow_)
   {
-    switch (currentAction_)
-    {
-    case Action::DrawRectangle:
-      currentFigure_->setFirstPoint(event->pos());
-      break;
-    
-    default:
-      break;
+    switch (currentAction_) {
+      case Action::DrawRectangle:
+        currentFigure_ = new Rectangle{this};
+        Logger::log("Canvas new Rectangle");
+        break;
+      case Action::DrawTriange:
+        currentFigure_ = new Triangle{this};
+        Logger::log("Canvas new Triangle");
+        break;
+      case Action::DrawEllipse:
+        currentFigure_ = new Ellipse{this};
+        Logger::log("Canvas new Ellipse");
+      default:
+        break;
     }
     if (currentFigure_)
     {
-      figures_.append(currentFigure_);
+      currentFigure_->setFirstPoint(event->pos());
+      currentFigure_->setSecondPoint(event->pos());
+      figures_.push_back(currentFigure_);
+      update();
     }
   }
+  update();
 }
 
 void Canvas::mouseMoveEvent(QMouseEvent *event)
@@ -81,6 +86,7 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
   QString xString = QString::number(event->pos().x());
   QString yString = QString::number(event->pos().y());
   Logger::log("Canvas mouse move event at <" + xString.toStdString() + "> <" + yString.toStdString() + ">");
+
   if (isFigureDrawingNow_ && currentFigure_)
   {
     currentFigure_->setSecondPoint(event->pos());
@@ -98,13 +104,12 @@ void Canvas::mouseReleaseEvent(QMouseEvent *event)
 
 void Canvas::paintEvent(QPaintEvent *event)
 {
-  // Logger::log("Canvas paint event");
-  QPainter painter(viewport());
+  Logger::log("Canvas paint event");
+  QPainter painter(this/*viewport()*/);
+  painter.fillRect(rect(), Qt::white);
   painter.setPen(QColor{Qt::black});
-  painter.setBrush(QColor{Qt::black});
   for (const auto &item : figures_)
   {
     item->draw(&painter);
   }
-  painter.drawRect(20,40,90,110);
 }
