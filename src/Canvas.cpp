@@ -110,8 +110,8 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 #else
         figures_.remove(i);
 #endif
-        Logger::log("Canvas remove figure");
         delete item;
+        Logger::log("Canvas remove figure");
       }
     }
     break;
