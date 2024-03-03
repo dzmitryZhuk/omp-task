@@ -42,9 +42,24 @@ void Canvas::setEllipseDrawingAction()
   Logger::log("Canvas setting ellipse drawing action");
 }
 
+void Canvas::setConnectingFiguresAction()
+{
+  currentAction_ = Action::ConnectFigures;
+}
+
+void Canvas::setMovingFigureAction()
+{
+  currentAction_ = Action::MoveFigure;
+}
+
+void Canvas::setRemovingFigureAction()
+{
+  currentAction_ = Action::RemoveFigure;
+}
+
 void Canvas::setFigureDrawing(bool enable)
 {
-  isFigureDrawingNow_ = enable;
+  isFigureDrawing_ = enable;
 }
 
 void Canvas::mousePressEvent(QMouseEvent *event)
@@ -53,7 +68,7 @@ void Canvas::mousePressEvent(QMouseEvent *event)
   QString yString = QString::number(event->pos().y());
   Logger::log("Canvas mouse press event at <" + xString.toStdString() + "> <" + yString.toStdString() + ">");
 
-  if (isFigureDrawingNow_)
+  if (isFigureDrawing_)
   {
     switch (currentAction_) {
       case Action::DrawRectangle:
@@ -78,6 +93,23 @@ void Canvas::mousePressEvent(QMouseEvent *event)
       update();
     }
   }
+
+  switch (currentAction_) {
+  case Action::RemoveFigure:
+    for (qsizetype i = 0; i < figures_.size(); i++)
+    {
+      auto item = figures_.at(i);
+      if (item->contains(event->pos()))
+      {
+        figures_.remove(i);
+        Logger::log("Canvas remove figure");
+      }
+      delete item;
+    }
+    break;
+  default:
+    break;
+  }
   update();
 }
 
@@ -87,7 +119,7 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
   QString yString = QString::number(event->pos().y());
   Logger::log("Canvas mouse move event at <" + xString.toStdString() + "> <" + yString.toStdString() + ">");
 
-  if (isFigureDrawingNow_ && currentFigure_)
+  if (isFigureDrawing_ && currentFigure_)
   {
     currentFigure_->setSecondPoint(event->pos());
     update();

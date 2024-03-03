@@ -19,6 +19,9 @@ public slots:
   void setRectangleDrawingAction();
   void setTriangleDrawingAction();
   void setEllipseDrawingAction();
+  void setConnectingFiguresAction();
+  void setMovingFigureAction();
+  void setRemovingFigureAction();
 
 public:
   enum class Action
@@ -27,6 +30,9 @@ public:
     DrawRectangle,
     DrawTriange,
     DrawEllipse,
+    ConnectFigures,
+    MoveFigure,
+    RemoveFigure,
   };
 
 protected:
@@ -37,7 +43,7 @@ protected:
 
   QList<Figure *> figures_;
   QList<Connection *> connections_;
-  bool isFigureDrawingNow_;
+  bool isFigureDrawing_;
   Figure *currentFigure_;
   Action currentAction_;
 };
