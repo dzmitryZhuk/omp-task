@@ -18,6 +18,7 @@ public:
   virtual void draw(QPainter *painter) = 0;
   virtual void move(double dx, double dy) = 0;
   virtual bool contains(const QPointF &point) const = 0;
+  virtual QPointF center() const;
 
 public slots:
   virtual void setFirstPoint(const QPointF &point);
