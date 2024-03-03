@@ -28,5 +28,15 @@ void Figure::setFirstPoint(const QPointF &point)
 
 void Figure::setSecondPoint(const QPointF &point)
 {
-  boundingRect_.setBottomRight(point);
+    boundingRect_.setBottomRight(point);
+}
+
+void Figure::setLastEdited(const quint64 &timestamp)
+{
+    lastEdited_ = timestamp;
+}
+
+quint64 Figure::getLastEdited()
+{
+  return lastEdited_;
 }

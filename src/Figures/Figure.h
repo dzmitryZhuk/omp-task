@@ -18,9 +18,14 @@ public:
   virtual void draw(QPainter *painter) = 0;
   virtual void move(double dx, double dy) = 0;
   virtual bool contains(const QPointF &point) const = 0;
+
+public slots:
   virtual void setFirstPoint(const QPointF &point);
   virtual void setSecondPoint(const QPointF &point);
+  virtual void setLastEdited(const quint64 &timestamp);
+  quint64 getLastEdited();
+
 protected:
   QRectF boundingRect_;
-  // id = last time used        // TODO: realize id of figure
+  quint64 lastEdited_; // timestamp when last time was edited
 };
