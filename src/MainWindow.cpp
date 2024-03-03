@@ -29,6 +29,18 @@ MainWindow::MainWindow(QWidget *parent)
     if (action->text().compare(tr("Ellipse")) == 0)
     {
       this->canvas_->setEllipseDrawingAction();
+    } else
+    if (action->text().compare(tr("Move")) == 0)
+    {
+      this->canvas_->setMovingFigureAction();
+    } else
+    if (action->text().compare(tr("Remove")) == 0)
+    {
+      this->canvas_->setRemovingFigureAction();
+    } else
+    if (action->text().compare(tr("Connect")) == 0)
+    {
+      this->canvas_->setConnectingFiguresAction();
     }
   });
 

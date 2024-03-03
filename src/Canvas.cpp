@@ -8,6 +8,7 @@
 #include <QPaintEvent>
 #include <QPen>
 #include <QBrush>
+#include <QtGlobal>
 
 Canvas::Canvas(QWidget *parent)
   : QWidget/*QScrollArea*/(parent)
@@ -45,16 +46,19 @@ void Canvas::setEllipseDrawingAction()
 void Canvas::setConnectingFiguresAction()
 {
   currentAction_ = Action::ConnectFigures;
+  Logger::log("Canvas setting connect action");
 }
 
 void Canvas::setMovingFigureAction()
 {
   currentAction_ = Action::MoveFigure;
+  Logger::log("Canvas setting move action");
 }
 
 void Canvas::setRemovingFigureAction()
 {
   currentAction_ = Action::RemoveFigure;
+  Logger::log("Canvas setting remove action");
 }
 
 void Canvas::setFigureDrawing(bool enable)
@@ -101,10 +105,14 @@ void Canvas::mousePressEvent(QMouseEvent *event)
       auto item = figures_.at(i);
       if (item->contains(event->pos()))
       {
+#if QT_VERSION_MAJOR == 5
+        figures_.removeAt(i);
+#else
         figures_.remove(i);
+#endif
         Logger::log("Canvas remove figure");
+        delete item;
       }
-      delete item;
     }
     break;
   default:
