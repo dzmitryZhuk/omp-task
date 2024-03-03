@@ -15,7 +15,6 @@ public:
   virtual ~Canvas();
 
 public slots:
-  void setFigureDrawing(bool enable = true);
   void setRectangleDrawingAction();
   void setTriangleDrawingAction();
   void setEllipseDrawingAction();
@@ -35,6 +34,10 @@ public:
     RemoveFigure,
   };
 
+protected slots:
+  void setFigureDrawing(bool enable = true);
+  void setFigureMoving(bool enable = true);
+
 protected:
   void mousePressEvent(QMouseEvent *event) override;
   void mouseMoveEvent(QMouseEvent *event) override;
@@ -44,6 +47,7 @@ protected:
   QList<Figure *> figures_;
   QList<Connection *> connections_;
   bool isFigureDrawing_;
+  bool isFigureMoving_;
   Figure *currentFigure_;
   Action currentAction_;
 };

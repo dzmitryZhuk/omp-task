@@ -16,6 +16,7 @@ Canvas::Canvas(QWidget *parent)
   , currentAction_(Action::Nothing)
 {
   setFigureDrawing(false);
+  setFigureMoving(false);
 }
 
 Canvas::~Canvas()
@@ -52,6 +53,7 @@ void Canvas::setConnectingFiguresAction()
 void Canvas::setMovingFigureAction()
 {
   currentAction_ = Action::MoveFigure;
+  setFigureMoving(true);
   Logger::log("Canvas setting move action");
 }
 
@@ -64,6 +66,11 @@ void Canvas::setRemovingFigureAction()
 void Canvas::setFigureDrawing(bool enable)
 {
   isFigureDrawing_ = enable;
+}
+
+void Canvas::setFigureMoving(bool enable)
+{
+  isFigureMoving_ = enable;
 }
 
 void Canvas::mousePressEvent(QMouseEvent *event)
@@ -93,6 +100,7 @@ void Canvas::mousePressEvent(QMouseEvent *event)
     {
       currentFigure_->setFirstPoint(event->pos());
       currentFigure_->setSecondPoint(event->pos());
+      currentFigure_->setLastEdited(event->timestamp());
       figures_.push_back(currentFigure_);
       update();
     }
@@ -102,6 +110,8 @@ void Canvas::mousePressEvent(QMouseEvent *event)
   case Action::RemoveFigure:
     for (qsizetype i = 0; i < figures_.size(); i++)
     {
+      // make array of figures that contain event->pos()
+      // remove figure with biggest timestamp (lastEdited)
       auto item = figures_.at(i);
       if (item->contains(event->pos()))
       {
@@ -112,6 +122,19 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 #endif
         delete item;
         Logger::log("Canvas remove figure");
+      }
+    }
+    break;
+  case Action::MoveFigure:
+    for (qsizetype i = 0; i < figures_.size(); i++)
+    {
+      // make array of figures that contain event->pos()
+      // currentFigure is figure from last step (with biggest timestamp (lastEdited))
+      auto item = figures_.at(i);
+      if (item->contains(event->pos()))
+      {
+        currentFigure_ = item;
+        Logger::log("Canvas move figure");
       }
     }
     break;
@@ -127,11 +150,21 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
   QString yString = QString::number(event->pos().y());
   Logger::log("Canvas mouse move event at <" + xString.toStdString() + "> <" + yString.toStdString() + ">");
 
+  static decltype(event->pos()) lastPos;
   if (isFigureDrawing_ && currentFigure_)
   {
     currentFigure_->setSecondPoint(event->pos());
     update();
   }
+  if (isFigureMoving_ && currentFigure_)
+  {
+    auto currentPos = event->pos();
+    auto dx = currentPos.x() - lastPos.x();
+    auto dy = currentPos.y() - lastPos.y();
+    currentFigure_->move(dx, dy);
+    update();
+  }
+  lastPos = event->pos();
 }
 
 void Canvas::mouseReleaseEvent(QMouseEvent *event)
@@ -139,6 +172,8 @@ void Canvas::mouseReleaseEvent(QMouseEvent *event)
   Logger::log("Canvas mouse release event");
   currentAction_ = Action::Nothing;
   currentFigure_ = nullptr;
+  setFigureDrawing(false);
+  setFigureMoving(false);
   update();
 }
 
