@@ -42,13 +42,13 @@ bool Triangle::contains(const QPointF &point) const
 
 void Triangle::setFirstPoint(const QPointF &point)
 {
-  boundingRect_.setTopLeft(point);
+  Figure::setFirstPoint(point);
   calculateVertices();
 }
 
 void Triangle::setSecondPoint(const QPointF &point)
 {
-  boundingRect_.setBottomRight(point);
+  Figure::setSecondPoint(point);
   calculateVertices();
 }
 
