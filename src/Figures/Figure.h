@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../config.h"
+
 #include <QObject>
 #include <QPainter>
 #include <QPointF>

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.h"
+
 #include <QToolBar>
 #include <QString>
 #include <QAction>

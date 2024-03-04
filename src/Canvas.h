@@ -2,6 +2,7 @@
 
 #include "Figures/Figure.h"
 #include "Connection.h"
+#include "config.h"
 
 #include <QScrollArea>
 #include <QList>

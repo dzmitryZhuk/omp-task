@@ -2,6 +2,7 @@
 
 #include "Canvas.h"
 #include "ToolPanel.h"
+#include "config.h"
 
 #include <QMainWindow>
 
