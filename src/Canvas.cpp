@@ -27,6 +27,8 @@ void Canvas::setRectangleDrawingAction()
 {
   currentAction_ = Action::DrawRectangle;
   setFigureDrawing(true);
+  setFigureMoving(false);
+  setConnectingFigures(false);
   Logger::log("Canvas setting rectangle drawing action");
 }
 
@@ -34,6 +36,8 @@ void Canvas::setTriangleDrawingAction()
 {
   currentAction_ = Action::DrawTriange;
   setFigureDrawing(true);
+  setFigureMoving(false);
+  setConnectingFigures(false);
   Logger::log("Canvas setting triangle drawing action");
 }
 
@@ -41,12 +45,17 @@ void Canvas::setEllipseDrawingAction()
 {
   currentAction_ = Action::DrawEllipse;
   setFigureDrawing(true);
+  setFigureMoving(false);
+  setConnectingFigures(false);
   Logger::log("Canvas setting ellipse drawing action");
 }
 
 void Canvas::setConnectingFiguresAction()
 {
   currentAction_ = Action::ConnectFigures;
+  setFigureDrawing(false);
+  setFigureMoving(false);
+  setConnectingFigures(true);
   Logger::log("Canvas setting connect action");
 }
 
@@ -54,12 +63,17 @@ void Canvas::setMovingFigureAction()
 {
   currentAction_ = Action::MoveFigure;
   setFigureMoving(true);
+  setFigureDrawing(false);
+  setConnectingFigures(false);
   Logger::log("Canvas setting move action");
 }
 
 void Canvas::setRemovingFigureAction()
 {
   currentAction_ = Action::RemoveFigure;
+  setFigureDrawing(false);
+  setFigureMoving(false);
+  setConnectingFigures(false);
   Logger::log("Canvas setting remove action");
 }
 
@@ -71,6 +85,11 @@ void Canvas::setFigureDrawing(bool enable)
 void Canvas::setFigureMoving(bool enable)
 {
   isFigureMoving_ = enable;
+}
+
+void Canvas::setConnectingFigures(bool enable)
+{
+  isConnectingFigures_ = enable;
 }
 
 void Canvas::mousePressEvent(QMouseEvent *event)
@@ -150,12 +169,13 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
   QString yString = QString::number(event->pos().y());
   Logger::log("Canvas mouse move event at <" + xString.toStdString() + "> <" + yString.toStdString() + ">");
 
-  static decltype(event->pos()) lastPos;
   if (isFigureDrawing_ && currentFigure_)
   {
     currentFigure_->setSecondPoint(event->pos());
     update();
   }
+
+  static decltype(event->pos()) lastPos;
   if (isFigureMoving_ && currentFigure_)
   {
     auto currentPos = event->pos();
@@ -174,6 +194,7 @@ void Canvas::mouseReleaseEvent(QMouseEvent *event)
   currentFigure_ = nullptr;
   setFigureDrawing(false);
   setFigureMoving(false);
+  setConnectingFigures(false);
   update();
 }
 

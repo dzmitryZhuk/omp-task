@@ -37,6 +37,7 @@ public:
 protected slots:
   void setFigureDrawing(bool enable = true);
   void setFigureMoving(bool enable = true);
+  void setConnectingFigures(bool enable = true);
 
 protected:
   void mousePressEvent(QMouseEvent *event) override;
@@ -48,6 +49,7 @@ protected:
   QList<Connection *> connections_;
   bool isFigureDrawing_;
   bool isFigureMoving_;
+  bool isConnectingFigures_;
   Figure *currentFigure_;
   Action currentAction_;
 };
