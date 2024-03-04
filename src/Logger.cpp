@@ -14,5 +14,5 @@ void Logger::log(const std::string &message)
 
 void Logger::log(const QString &message)
 {
-    Logger::log(message.toStdString());
+  Logger::log(message.toStdString());
 }
