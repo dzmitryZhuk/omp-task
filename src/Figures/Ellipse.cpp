@@ -1,4 +1,5 @@
 #include "Ellipse.h"
+#include "../Logger.h"
 
 Ellipse::Ellipse(QObject *parent)
   : Figure{parent}
@@ -17,12 +18,17 @@ Ellipse::~Ellipse()
 void Ellipse::draw(QPainter *painter)
 {
   painter->drawEllipse(boundingRect_);
+  Logger::log(QString(metaObject()->className()) + " <" +
+                QString::number(lastEdited_) + "> drawing with bounding rect x<" +
+                QString::number(boundingRect_.x()) + "> y <" +
+                QString::number(boundingRect_.y()) + "> width <" +
+                QString::number(boundingRect_.width()) + "> height <" +
+                QString::number(boundingRect_.height()) + ">");
 }
 
 void Ellipse::move(double dx, double dy)
 {
   boundingRect_.translate(dx, dy);
-  // draw
 }
 
 bool Ellipse::contains(const QPointF &point) const

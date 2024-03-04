@@ -20,6 +20,12 @@ void Triangle::draw(QPainter *painter)
   QPolygonF triangle;
   triangle << p1_ << p2_ << p3_;
   painter->drawPolygon(triangle);
+  Logger::log(QString(metaObject()->className()) + " <" +
+              QString::number(lastEdited_) + "> drawing with bounding rect x<" +
+              QString::number(boundingRect_.x()) + "> y <" +
+              QString::number(boundingRect_.y()) + "> width <" +
+              QString::number(boundingRect_.width()) + "> height <" +
+              QString::number(boundingRect_.height()) + ">");
 }
 
 void Triangle::move(double dx, double dy)
@@ -30,7 +36,6 @@ void Triangle::move(double dx, double dy)
   p2_.ry() += dy;
   p3_.rx() += dx;
   p3_.ry() += dy;
-  // draw
 }
 
 bool Triangle::contains(const QPointF &point) const
