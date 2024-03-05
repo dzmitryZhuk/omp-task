@@ -15,6 +15,11 @@ Ellipse::~Ellipse()
 {
 }
 
+QString Ellipse::className() const
+{
+  return QString{"Ellipse"};
+}
+
 void Ellipse::draw(QPainter *painter)
 {
   painter->drawEllipse(boundingRect_);

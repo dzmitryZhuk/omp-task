@@ -46,16 +46,17 @@ quint64 Figure::getLastEdited()
   return lastEdited_;
 }
 
-QDataStream &operator<<(QDataStream &out, const Figure &figure)
+QDataStream &operator<<(QDataStream &out, const Figure *figure)
 {
-  out << figure.boundingRect_;
-  out << figure.lastEdited_;
+  out << figure->className();
+  out << figure->boundingRect_;
+  out << figure->lastEdited_;
   return out;
 }
 
-QDataStream &operator>>(QDataStream &in, Figure &figure)
+QDataStream &operator>>(QDataStream &in, Figure *figure)
 {
-  in >> figure.boundingRect_;
-  in >> figure.lastEdited_;
+  in >> figure->boundingRect_;
+  in >> figure->lastEdited_;
   return in;
 }

@@ -18,6 +18,11 @@ Rectangle::~Rectangle()
 {
 }
 
+QString Rectangle::className() const
+{
+  return QString{"Rectangle"};
+}
+
 void Rectangle::draw(QPainter *painter)
 {
   painter->drawRect(boundingRect_);

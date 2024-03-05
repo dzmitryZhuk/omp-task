@@ -11,6 +11,7 @@ public:
   explicit Triangle(QObject *parent = nullptr);
   Triangle(const QPointF &first, const QPointF &second, QObject *parent = nullptr);
   virtual ~Triangle();
+  virtual QString className() const override;
 
   virtual void draw(QPainter *painter) override;
   virtual void move(double dx, double dy) override;

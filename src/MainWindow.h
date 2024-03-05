@@ -13,6 +13,11 @@ class MainWindow
 public:
   explicit MainWindow(QWidget *parent = nullptr);
   virtual ~MainWindow();
+
+protected slots:
+  void saveTriggered();
+  void openTriggered();
+
 protected:
   Canvas *canvas_;
   ToolPanel *toolPanel_;

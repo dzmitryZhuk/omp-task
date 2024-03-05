@@ -3,6 +3,9 @@
 
 #include <QMessageBox>
 #include <QAction>
+#include <QFileDialog>
+#include <QDir>
+#include <QDataStream>
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
@@ -41,6 +44,14 @@ MainWindow::MainWindow(QWidget *parent)
     if (action->text().compare(tr("Connect")) == 0)
     {
       this->canvas_->setConnectingFiguresAction();
+    } else
+    if (action->text().compare(tr("Save")) == 0)
+    {
+      this->saveTriggered();
+    } else
+    if (action->text().compare(tr("Open")) == 0)
+    {
+      this->openTriggered();
     }
   });
 
@@ -49,4 +60,41 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+}
+
+void MainWindow::saveTriggered()
+{
+  auto figures = canvas_->figures();
+  auto connections = canvas_->connections();
+  auto saveFilePath = QFileDialog::getSaveFileName(this, tr("Save file"), QDir::currentPath(), tr("Images (*.pnt)"));
+  QFile file(saveFilePath);
+  if (file.open(QIODevice::WriteOnly))
+  {
+    QDataStream out(&file);
+    out << figures.size();
+    for (const auto *item : figures)
+    {
+      out << item;
+    }
+  }
+}
+
+void MainWindow::openTriggered()
+{
+  // QList<Figure *> figures;
+  // QList<Connection *> connections;
+  // auto openFilePath = QFileDialog::getOpenFileName(this, tr("Open file"), QDir::currentPath(), tr("Images (*.pnt);All (*)"));
+  // QFile file(openFilePath);
+  // if (file.open(QIODevice::ReadOnly))
+  // {
+  //   QDataStream in(&file);
+  //   qsizetype size;
+  //   in >> size;
+  //   for (qsizetype i = 0; i < size; i++)
+  //   {
+  //     Figure readFigure;
+  //     auto item = new
+  //     insertAction << *item;
+  //   }
+  // }
 }

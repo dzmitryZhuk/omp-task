@@ -15,6 +15,11 @@ Triangle::~Triangle()
 {
 }
 
+QString Triangle::className() const
+{
+  return QString{"Triangle"};
+}
+
 void Triangle::draw(QPainter *painter)
 {
   QPolygonF triangle;

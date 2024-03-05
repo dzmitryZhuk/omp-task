@@ -10,6 +10,7 @@ public:
   explicit Ellipse(QObject *parent = nullptr);
   Ellipse(const QRectF &rect, QObject *parent = nullptr);
   virtual ~Ellipse();
+  virtual QString className() const override;
 
   virtual void draw(QPainter *painter) override;
   virtual void move(double dx, double dy) override;
