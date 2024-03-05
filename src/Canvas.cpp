@@ -100,6 +100,11 @@ void Canvas::setFigureMoving(bool enable)
 void Canvas::setConnectingFigures(bool enable)
 {
   isConnectingFigures_ = enable;
+  if (!enable)
+  {
+    connectionLine_.first.reset();
+    connectionLine_.second.reset();
+  }
 }
 
 void Canvas::cancelAllActions()
@@ -162,25 +167,14 @@ void Canvas::mousePressEvent(QMouseEvent *event)
       }
     }
 
-    if (currentAction_ != Action::Nothing)
+    if (currentAction_ != Action::Nothing && !isFigureDrawing_)
     {
       // first part behavior while left mouse button pressed same in actions Move, Connect
       // and Remove: we need determine figure that was edited last, and work with this figure
-      std::vector<Figure *> figuresUnderMouse;
-      for (const auto &item : figures_)
+      auto foundFigure = figureUnderPoint(event->pos());
+      if (foundFigure.has_value())
       {
-        if (item->contains(event->pos()))
-        {
-          figuresUnderMouse.push_back(item);
-        }
-      }
-      if (!figuresUnderMouse.empty())
-      {
-        std::sort(figuresUnderMouse.begin(), figuresUnderMouse.end(), [](Figure * l, Figure *r) {
-          return l->getLastEdited() < r->getLastEdited();
-        });
-
-        currentFigure_ = figuresUnderMouse[figuresUnderMouse.size() - 1];
+        currentFigure_ = foundFigure.value();
       }
       if (currentFigure_)
       {
@@ -201,7 +195,7 @@ void Canvas::mousePressEvent(QMouseEvent *event)
           break;
         case Action::ConnectFigures:
           {
-
+            connectionLine_.first = currentFigure_->center();
           }
           break;
         default:
@@ -251,15 +245,36 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
     update();
   }
   lastPos = event->pos();
+
+  if (isConnectingFigures_)
+  {
+    connectionLine_.second = event->pos();
+  }
 }
 
 void Canvas::mouseReleaseEvent(QMouseEvent *event)
 {
   Logger::log("Canvas mouse release event");
+
   if (isFigureDrawing_ && currentFigure_)
   {
     figures_.push_back(currentFigure_);
   }
+  
+  if (isConnectingFigures_)
+  {  
+    auto figureUnderMouse = figureUnderPoint(event->pos());
+    decltype(figureUnderMouse) firstFigureInConnection;
+    if (connectionLine_.first.has_value())
+    {
+      firstFigureInConnection = figureUnderPoint(connectionLine_.first.value());
+    }
+    if (figureUnderMouse.has_value() && firstFigureInConnection.has_value())
+    {
+      auto connect = new Connection{firstFigureInConnection.value(), figureUnderMouse.value()};
+    }
+  }
+
   currentFigure_ = nullptr;
   cancelAllActions();
   update();
@@ -275,8 +290,38 @@ void Canvas::paintEvent(QPaintEvent *event)
   {
     item->draw(&painter);
   }
+  for (const auto &item : connections_)
+  {
+    item->draw(&painter);
+  }
   if (currentFigure_)
   {
     currentFigure_->draw(&painter);
   }
+  if (connectionLine_.first.has_value() && connectionLine_.second.has_value())
+  {
+    painter.drawLine(connectionLine_.first.value(), connectionLine_.second.value());
+  }
+}
+
+std::optional<Figure *> Canvas::figureUnderPoint(const QPointF &point) const
+{
+  // find figure for conection
+  std::vector<Figure *> figuresUnderMouse;
+  for (const auto &item : figures_)
+  {
+    if (item->contains(point))
+    {
+      figuresUnderMouse.push_back(item);
+    }
+  }
+  if (!figuresUnderMouse.empty())
+  {
+    std::sort(figuresUnderMouse.begin(), figuresUnderMouse.end(), [](Figure * l, Figure *r) {
+      return l->getLastEdited() < r->getLastEdited();
+    });
+
+    return figuresUnderMouse[figuresUnderMouse.size() - 1];
+  }
+  return std::nullopt;
 }

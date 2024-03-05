@@ -4,11 +4,13 @@
 #include "Connection.h"
 #include "config.h"
 
+#include <optional>
 #include <QWidget>
 #include <QList>
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QPaintEvent>
+#include <QPair>
 
 class Canvas
   : public QWidget
@@ -58,4 +60,11 @@ protected:
   bool isConnectingFigures_;
   Figure *currentFigure_;
   Action currentAction_;
+  QPair<std::optional<QPointF>, std::optional<QPointF>> connectionLine_;
+
+private slots:
+  // findes figure under point
+  // return figure that was last modified if there some figures under point
+  // return nothing otherwise
+  std::optional<Figure *> figureUnderPoint(const QPointF &point) const;
 };
