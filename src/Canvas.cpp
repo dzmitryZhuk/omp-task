@@ -188,13 +188,9 @@ void Canvas::mousePressEvent(QMouseEvent *event)
         {
         case Action::RemoveFigure:
           {
-//             figures_.
-// #if QT_VERSION_MAJOR == 5
-//             figures_.removeAt(i);
-// #else
-//             figures_.remove(i);
-// #endif
-//             delete item;
+            figures_.removeAll(currentFigure_);
+            delete currentFigure_;
+            currentFigure_ = nullptr;
             Logger::log("Canvas remove figure");
           }
           break;
