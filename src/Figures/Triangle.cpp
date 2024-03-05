@@ -30,12 +30,8 @@ void Triangle::draw(QPainter *painter)
 
 void Triangle::move(double dx, double dy)
 {
-  p1_.rx() += dx;
-  p1_.ry() += dy;
-  p2_.rx() += dx;
-  p2_.ry() += dy;
-  p3_.rx() += dx;
-  p3_.ry() += dy;
+  boundingRect_.translate(dx, dy);
+  calculateVertices();
 }
 
 bool Triangle::contains(const QPointF &point) const
@@ -43,6 +39,13 @@ bool Triangle::contains(const QPointF &point) const
   QPolygonF polygon;
   polygon << p1_ << p2_ << p3_;
   return polygon.containsPoint(point, Qt::OddEvenFill);
+}
+
+QPointF Triangle::center() const
+{
+  auto x = (p1_.x() + p2_.x() + p3_.x()) / 3;
+  auto y = (p1_.y() + p2_.y() + p3_.y()) / 3;
+  return QPointF{x, y};
 }
 
 void Triangle::setFirstPoint(const QPointF &point)
