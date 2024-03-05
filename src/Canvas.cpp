@@ -77,6 +77,28 @@ void Canvas::setRemovingFigureAction()
   Logger::log("Canvas setting remove action");
 }
 
+void Canvas::setFigures(const QList<Figure *> &figures)
+{
+  figures_.clear();
+  figures_ = figures;
+}
+
+void Canvas::setConnections(const QList<Connection *> &connections)
+{
+  connections_.clear();
+  connections_ = connections;
+}
+
+QList<Figure *> Canvas::figures()
+{
+  return figures_;
+}
+
+QList<Connection *> Canvas::connections()
+{
+  return connections_;
+}
+
 void Canvas::setFigureDrawing(bool enable)
 {
   isFigureDrawing_ = enable;

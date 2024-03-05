@@ -27,6 +27,10 @@ public slots:
   void setConnectingFiguresAction();
   void setMovingFigureAction();
   void setRemovingFigureAction();
+  void setFigures(const QList<Figure *> &figures);
+  void setConnections(const QList<Connection *> &connections);
+  QList<Figure *> figures();
+  QList<Connection *> connections();
 
 public:
   enum class Action
