@@ -15,6 +15,7 @@ public:
   virtual ~Connection();
 
   virtual void draw(QPainter *painter) const;
+  bool containsFigure(const Figure *figure) const;
   Figure * getFirstFigure() const;
   Figure * getSecondFigure() const;
 

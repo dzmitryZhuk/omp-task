@@ -30,6 +30,11 @@ void Connection::draw(QPainter *painter) const
   painter->drawLine(firstPoint, secondPoint);
 }
 
+bool Connection::containsFigure(const Figure * figure) const
+{
+  return figure == firstFigure_ || figure == secondFigure_;
+}
+
 Figure *Connection::getFirstFigure() const
 {
   return firstFigure_;

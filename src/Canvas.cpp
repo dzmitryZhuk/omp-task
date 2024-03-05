@@ -181,6 +181,20 @@ void Canvas::mousePressEvent(QMouseEvent *event)
         {
         case Action::RemoveFigure:
           {
+            for (auto it = connections_.begin(); it != connections_.end();)
+            {
+              if ((*it)->containsFigure(currentFigure_))
+              {
+                auto deletingConnection = *it;
+                it = connections_.erase(it);
+                delete deletingConnection;
+              }
+              else
+              {
+                ++it;
+              }
+            }
+
             figures_.removeAll(currentFigure_);
             delete currentFigure_;
             currentFigure_ = nullptr;
