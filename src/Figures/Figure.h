@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QPointF>
 #include <QRectF>
+#include <QDataStream>
 
 class Figure
   : public QObject
@@ -16,6 +17,8 @@ public:
   Figure(const QPointF &first, const QPointF &second, QObject *parent = nullptr);
   Figure(const QRectF &boundingRect, QObject *parent = nullptr);
   virtual ~Figure();
+  friend QDataStream &operator<<(QDataStream &out, const Figure &figure);
+  friend QDataStream &operator>>(QDataStream &in, Figure &figure);
 
   virtual void draw(QPainter *painter) = 0;
   virtual void move(double dx, double dy) = 0;
