@@ -85,6 +85,7 @@ void Canvas::setFigureDrawing(bool enable)
 void Canvas::setFigureMoving(bool enable)
 {
   isFigureMoving_ = enable;
+  setMouseTracking(enable);
 }
 
 void Canvas::setConnectingFigures(bool enable)
@@ -181,6 +182,7 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
     auto currentPos = event->pos();
     auto dx = currentPos.x() - lastPos.x();
     auto dy = currentPos.y() - lastPos.y();
+    Logger::log("Canvas make figure move to dx " + QString::number(dx) + " dy " + QString::number(dy));
     currentFigure_->move(dx, dy);
     update();
   }
