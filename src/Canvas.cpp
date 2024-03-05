@@ -94,7 +94,6 @@ void Canvas::setFigureMoving(bool enable)
   {
     setCursor(Qt::ArrowCursor);
   }
-  // mouse set hand icon if enable == true and default icon otherwise
 }
 
 void Canvas::setConnectingFigures(bool enable)
@@ -191,11 +190,15 @@ void Canvas::mousePressEvent(QMouseEvent *event)
         case Action::MoveFigure:
           {
             setCursor(Qt::ClosedHandCursor);
+            Logger::log("Canvas move figure");
           }
           break;
         case Action::ConnectFigures:
           {
             connectionLine_.first = currentFigure_->center();
+            connectionLine_.second = event->pos();
+            Logger::log("Canvas connect, detected first figure with center <" + QString::number(connectionLine_.first.value().x()) + "> <"
+                                                                              + QString::number(connectionLine_.first.value().y()) + ">");
           }
           break;
         default:
@@ -230,7 +233,6 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
   {
     currentFigure_->setSecondPoint(event->pos());
     currentFigure_->setLastEdited(event->timestamp());
-    update();
   }
 
   static decltype(event->pos()) lastPos;
@@ -242,14 +244,15 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
     Logger::log("Canvas make figure move to dx " + QString::number(dx) + " dy " + QString::number(dy));
     currentFigure_->move(dx, dy);
     currentFigure_->setLastEdited(event->timestamp());
-    update();
   }
   lastPos = event->pos();
 
   if (isConnectingFigures_)
   {
     connectionLine_.second = event->pos();
+    Logger::log("Canvas set second pos for connection line with <" + QString::number(event->pos().x()) + " > <" + QString::number(event->pos().y()) + ">");
   }
+  update();
 }
 
 void Canvas::mouseReleaseEvent(QMouseEvent *event)
@@ -263,15 +266,18 @@ void Canvas::mouseReleaseEvent(QMouseEvent *event)
   
   if (isConnectingFigures_)
   {  
+    Logger::log("Connecting figure ok");
     auto figureUnderMouse = figureUnderPoint(event->pos());
     decltype(figureUnderMouse) firstFigureInConnection;
     if (connectionLine_.first.has_value())
     {
       firstFigureInConnection = figureUnderPoint(connectionLine_.first.value());
     }
+    Logger::log("First figure " + QString::number(firstFigureInConnection.has_value()) + " and second " + QString::number(figureUnderMouse.has_value()));
     if (figureUnderMouse.has_value() && firstFigureInConnection.has_value())
     {
       auto connect = new Connection{firstFigureInConnection.value(), figureUnderMouse.value()};
+      connections_.push_back(connect);
     }
   }
 
@@ -298,6 +304,8 @@ void Canvas::paintEvent(QPaintEvent *event)
   {
     currentFigure_->draw(&painter);
   }
+  Logger::log("Connection line first " + QString::number(connectionLine_.first.has_value()));
+  Logger::log("Connection line second " + QString::number(connectionLine_.second.has_value()));
   if (connectionLine_.first.has_value() && connectionLine_.second.has_value())
   {
     painter.drawLine(connectionLine_.first.value(), connectionLine_.second.value());
