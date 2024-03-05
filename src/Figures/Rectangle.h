@@ -11,6 +11,7 @@ class Rectangle
 public:
   explicit Rectangle(QObject *parent = nullptr);
   Rectangle(const QPointF &first, const QPointF &second, QObject *parent = nullptr);
+  Rectangle(const QRectF &boundingRect, QObject *parent = nullptr);
   virtual ~Rectangle();
   virtual QString className() const override;
 

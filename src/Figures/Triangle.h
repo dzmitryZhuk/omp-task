@@ -10,6 +10,7 @@ class Triangle
 public:
   explicit Triangle(QObject *parent = nullptr);
   Triangle(const QPointF &first, const QPointF &second, QObject *parent = nullptr);
+  Triangle(const QRectF &boundingRect, QObject *parent = nullptr);
   virtual ~Triangle();
   virtual QString className() const override;
 

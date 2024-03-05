@@ -6,8 +6,13 @@ Ellipse::Ellipse(QObject *parent)
 {
 }
 
-Ellipse::Ellipse(const QRectF &rect, QObject *parent)
-  : Figure{rect, parent}
+Ellipse::Ellipse(const QRectF &boundingRect, QObject *parent)
+  : Figure{boundingRect, parent}
+{
+}
+
+Ellipse::Ellipse(const QPointF &first, const QPointF &second, QObject *parent)
+  : Figure{first, second, parent}
 {
 }
 

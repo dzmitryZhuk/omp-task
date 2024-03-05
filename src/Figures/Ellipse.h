@@ -9,6 +9,7 @@ class Ellipse : public Figure
 public:
   explicit Ellipse(QObject *parent = nullptr);
   Ellipse(const QRectF &rect, QObject *parent = nullptr);
+  Ellipse(const QPointF &first, const QPointF &second, QObject *parent = nullptr);
   virtual ~Ellipse();
   virtual QString className() const override;
 

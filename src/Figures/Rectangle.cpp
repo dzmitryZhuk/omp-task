@@ -14,6 +14,11 @@ Rectangle::Rectangle(const QPointF &first, const QPointF &second, QObject *paren
   boundingRect_ = QRectF{first, second};
 }
 
+Rectangle::Rectangle(const QRectF &boundingRect, QObject *parent)
+  : Figure(boundingRect, parent)
+{
+}
+
 Rectangle::~Rectangle()
 {
 }
