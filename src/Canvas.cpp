@@ -86,6 +86,14 @@ void Canvas::setFigureMoving(bool enable)
 {
   isFigureMoving_ = enable;
   setMouseTracking(enable);
+  if (enable)
+  {
+    setCursor(Qt::OpenHandCursor);
+  }
+  else
+  {
+    setCursor(Qt::ArrowCursor);
+  }
   // mouse set hand icon if enable == true and default icon otherwise
 }
 
@@ -154,48 +162,56 @@ void Canvas::mousePressEvent(QMouseEvent *event)
       }
     }
 
-    switch (currentAction_) {
-    case Action::RemoveFigure:
-      for (qsizetype i = 0; i < figures_.size(); i++)
+    if (currentAction_ != Action::Nothing)
+    {
+      // first part behavior while left mouse button pressed same in actions Move, Connect
+      // and Remove: we need determine figure that was edited last, and work with this figure
+      std::vector<Figure *> figuresUnderMouse;
+      for (const auto &item : figures_)
       {
-        // make array of figures that contain event->pos()
-        // remove figure with biggest timestamp (lastEdited)
-        auto item = figures_.at(i);
         if (item->contains(event->pos()))
         {
-#if QT_VERSION_MAJOR == 5
-          figures_.removeAt(i);
-#else
-          figures_.remove(i);
-#endif
-          delete item;
-          Logger::log("Canvas remove figure");
+          figuresUnderMouse.push_back(item);
         }
       }
-      break;
-    case Action::MoveFigure:      // behavior while left mouse button pressed same in actions Move and Connect:
-    case Action::ConnectFigures:  // we need determine figure that was edited last, and work with this figure
+      if (!figuresUnderMouse.empty())
       {
-        std::vector<Figure *> figuresUnderMouse;
-        for (const auto &item : figures_)
-        {
-          if (item->contains(event->pos()))
-          {
-            figuresUnderMouse.push_back(item);
-          }
-        }
-        if (!figuresUnderMouse.empty())
-        {
-          std::sort(figuresUnderMouse.begin(), figuresUnderMouse.end(), [](Figure * l, Figure *r) {
-            return l->getLastEdited() < r->getLastEdited();
-          });
+        std::sort(figuresUnderMouse.begin(), figuresUnderMouse.end(), [](Figure * l, Figure *r) {
+          return l->getLastEdited() < r->getLastEdited();
+        });
 
-          currentFigure_ = figuresUnderMouse[figuresUnderMouse.size() - 1];
+        currentFigure_ = figuresUnderMouse[figuresUnderMouse.size() - 1];
+      }
+      if (currentFigure_)
+      {
+        switch (currentAction_)
+        {
+        case Action::RemoveFigure:
+          {
+//             figures_.
+// #if QT_VERSION_MAJOR == 5
+//             figures_.removeAt(i);
+// #else
+//             figures_.remove(i);
+// #endif
+//             delete item;
+            Logger::log("Canvas remove figure");
+          }
+          break;
+        case Action::MoveFigure:
+          {
+            setCursor(Qt::ClosedHandCursor);
+          }
+          break;
+        case Action::ConnectFigures:
+          {
+
+          }
+          break;
+        default:
+          break;
         }
       }
-      break;
-    default:
-      break;
     }
     update();
   }
