@@ -4,11 +4,14 @@
 #include "Connection.h"
 #include "config.h"
 
-#include <QScrollArea>
+#include <QWidget>
 #include <QList>
+#include <QKeyEvent>
+#include <QMouseEvent>
+#include <QPaintEvent>
 
 class Canvas
-  : public QWidget/*QScrollArea*/
+  : public QWidget
 {
   Q_OBJECT
 public:
@@ -39,8 +42,10 @@ protected slots:
   void setFigureDrawing(bool enable = true);
   void setFigureMoving(bool enable = true);
   void setConnectingFigures(bool enable = true);
+  void cancelAllActions();
 
 protected:
+  void keyPressEvent(QKeyEvent *event) override;
   void mousePressEvent(QMouseEvent *event) override;
   void mouseMoveEvent(QMouseEvent *event) override;
   void mouseReleaseEvent(QMouseEvent *event) override;
