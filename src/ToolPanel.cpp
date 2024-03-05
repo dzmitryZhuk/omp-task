@@ -12,7 +12,7 @@ ToolPanel::ToolPanel(QWidget *parent)
   , removeAction_(new QAction{tr("Remove")})
 
   , saveAction_(new QAction{tr("Save")})
-  , loadAction_(new QAction{tr("Load")})
+  , openAction_(new QAction{tr("Open")})
 {
   addAction(rectangleAction_);
   addAction(triangleAction_);
@@ -29,7 +29,7 @@ ToolPanel::ToolPanel(QWidget *parent)
 
   addSeparator();
 
-  addAction(loadAction_);
+  addAction(openAction_);
   addAction(saveAction_);
 }
 
@@ -45,5 +45,5 @@ ToolPanel::~ToolPanel()
   delete removeAction_;
 
   delete saveAction_;
-  delete loadAction_;
+  delete openAction_;
 };

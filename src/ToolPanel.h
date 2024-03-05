@@ -24,5 +24,5 @@ protected:
   QAction *removeAction_;
 
   QAction *saveAction_;
-  QAction *loadAction_;
+  QAction *openAction_;
 };
