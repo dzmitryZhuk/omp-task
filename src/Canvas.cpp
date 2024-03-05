@@ -212,6 +212,7 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
   if (isFigureDrawing_ && currentFigure_)
   {
     currentFigure_->setSecondPoint(event->pos());
+    currentFigure_->setLastEdited(event->timestamp());
     update();
   }
 
@@ -223,6 +224,7 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
     auto dy = currentPos.y() - lastPos.y();
     Logger::log("Canvas make figure move to dx " + QString::number(dx) + " dy " + QString::number(dy));
     currentFigure_->move(dx, dy);
+    currentFigure_->setLastEdited(event->timestamp());
     update();
   }
   lastPos = event->pos();
