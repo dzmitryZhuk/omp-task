@@ -4,6 +4,8 @@
 #include "Figures/Ellipse.h"
 #include "Logger.h"
 
+#include <set>
+#include <algorithm>
 #include <QPen>
 #include <QBrush>
 #include <QtGlobal>
@@ -171,16 +173,24 @@ void Canvas::mousePressEvent(QMouseEvent *event)
         }
       }
       break;
-    case Action::MoveFigure:
-      for (qsizetype i = 0; i < figures_.size(); i++)
+    case Action::MoveFigure:      // behavior while left mouse button pressed same in actions Move and Connect:
+    case Action::ConnectFigures:  // we need determine figure that was edited last, and work with this figure
       {
-        // make array of figures that contain event->pos()
-        // currentFigure is figure from last step (with biggest timestamp (lastEdited))
-        auto item = figures_.at(i);
-        if (item->contains(event->pos()))
+        std::vector<Figure *> figuresUnderMouse;
+        for (const auto &item : figures_)
         {
-          currentFigure_ = item;
-          Logger::log("Canvas move figure");
+          if (item->contains(event->pos()))
+          {
+            figuresUnderMouse.push_back(item);
+          }
+        }
+        if (!figuresUnderMouse.empty())
+        {
+          std::sort(figuresUnderMouse.begin(), figuresUnderMouse.end(), [](Figure * l, Figure *r) {
+            return l->getLastEdited() < r->getLastEdited();
+          });
+
+          currentFigure_ = figuresUnderMouse[figuresUnderMouse.size() - 1];
         }
       }
       break;
