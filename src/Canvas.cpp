@@ -84,6 +84,7 @@ void Canvas::setFigureMoving(bool enable)
 {
   isFigureMoving_ = enable;
   setMouseTracking(enable);
+  // mouse set hand icon if enable == true and default icon otherwise
 }
 
 void Canvas::setConnectingFigures(bool enable)
