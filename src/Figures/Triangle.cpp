@@ -9,11 +9,13 @@ Triangle::Triangle(QObject *parent)
 Triangle::Triangle(const QPointF &first, const QPointF &second, QObject *parent)
   : Figure{first, second, parent}
 {
+  calculateVertices();
 }
 
 Triangle::Triangle(const QRectF &boundingRect, QObject *parent)
   : Figure{boundingRect, parent}
 {
+  calculateVertices();
 }
 
 Triangle::~Triangle()
