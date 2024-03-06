@@ -12,10 +12,17 @@ file(GLOB HEADERS "*.h" "Figures/*.h")
 
 include_directories(${DIR_SOURCES})
 
+if(Qt${QT_VERSION_MAJOR} VERSION_GREATER_EQUAL 6)
+qt_add_executable(${PROJECT_NAME}
+    ${SOURCES}
+    ${HEADERS}
+    )
+else()
 add_executable(${PROJECT_NAME}
     ${SOURCES}
     ${HEADERS}
     )
+endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
                             Qt${QT_VERSION_MAJOR}::Widgets
