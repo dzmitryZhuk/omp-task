@@ -159,6 +159,7 @@ void Canvas::keyPressEvent(QKeyEvent *event)
       }
       currentFigure_ = nullptr;
     }
+    update();
   }
 }
 

@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 
   // canvas initialization
   setCentralWidget(canvas_);
+  canvas_->setFocusPolicy(Qt::ClickFocus);
 
   connect(toolPanel_, &ToolPanel::actionTriggered, [this](QAction *action){
     Logger::log("Tool panel action <" + action->text().toStdString() + "> triggered");
@@ -91,7 +92,7 @@ void MainWindow::openTriggered()
 {
   QList<Figure *> figures;
   QList<Connection *> connections;
-  auto openFilePath = QFileDialog::getOpenFileName(this, tr("Open file"), QDir::currentPath(), tr("Images (*.pnt);All (*)"));
+  auto openFilePath = QFileDialog::getOpenFileName(this, tr("Open file"), QDir::currentPath(), tr("Images (*.pnt)"));
   QFile file(openFilePath);
   if (file.open(QIODevice::ReadOnly))
   {
