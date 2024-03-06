@@ -27,6 +27,7 @@ public slots:
   void setConnectingFiguresAction();
   void setMovingFigureAction();
   void setRemovingFigureAction();
+  void setFiguresAndConnections(const QList<Figure *> &figures, const QList<Connection *> &connections);
   void setFigures(const QList<Figure *> &figures);
   void setConnections(const QList<Connection *> &connections);
   QList<Figure *> figures();

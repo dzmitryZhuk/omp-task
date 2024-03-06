@@ -1,5 +1,8 @@
 #include "MainWindow.h"
 #include "Logger.h"
+#include "Figures/Rectangle.h"
+#include "Figures/Triangle.h"
+#include "Figures/Ellipse.h"
 
 #include <QMessageBox>
 #include <QAction>
@@ -76,25 +79,46 @@ void MainWindow::saveTriggered()
     {
       out << item;
     }
+    // save connections
   }
 }
 
 void MainWindow::openTriggered()
 {
-  // QList<Figure *> figures;
-  // QList<Connection *> connections;
-  // auto openFilePath = QFileDialog::getOpenFileName(this, tr("Open file"), QDir::currentPath(), tr("Images (*.pnt);All (*)"));
-  // QFile file(openFilePath);
-  // if (file.open(QIODevice::ReadOnly))
-  // {
-  //   QDataStream in(&file);
-  //   qsizetype size;
-  //   in >> size;
-  //   for (qsizetype i = 0; i < size; i++)
-  //   {
-  //     Figure readFigure;
-  //     auto item = new
-  //     insertAction << *item;
-  //   }
-  // }
+  QList<Figure *> figures;
+  QList<Connection *> connections;
+  auto openFilePath = QFileDialog::getOpenFileName(this, tr("Open file"), QDir::currentPath(), tr("Images (*.pnt);All (*)"));
+  QFile file(openFilePath);
+  if (file.open(QIODevice::ReadOnly))
+  {
+    QDataStream in(&file);
+    decltype(figures.size()) size;
+    in >> size;
+    for (decltype(figures.size()) i = 0; i < size; i++)
+    {
+      QString className;
+      QRectF boundingRect;
+      quint64 lastEdited;
+      in >> className;
+      in >> boundingRect;
+      in >> lastEdited;
+      Figure *figure;
+      if (className.compare("Rectangle") == 0)
+      {
+        figure = new Rectangle{boundingRect, canvas_};
+      } else
+      if (className.compare("Triangle") == 0)
+      {
+        figure = new Triangle{boundingRect, canvas_};
+      } else
+      if (className.compare("Ellipse") == 0)
+      {
+        figure = new Ellipse{boundingRect, canvas_};
+      }
+      figure->setLastEdited(lastEdited);
+      figures.push_back(figure);
+    }
+    canvas_->setFigures(figures);
+    // load connections
+  }
 }
