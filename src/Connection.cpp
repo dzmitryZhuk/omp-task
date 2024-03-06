@@ -1,4 +1,5 @@
 #include "Connection.h"
+#include "Logger.h"
 
 Connection::Connection(QObject *parent)
   : QObject(parent)
@@ -35,12 +36,12 @@ bool Connection::containsFigure(const Figure * figure) const
   return figure == firstFigure_ || figure == secondFigure_;
 }
 
-Figure *Connection::getFirstFigure() const
+Figure *Connection::firstFigure() const
 {
   return firstFigure_;
 }
 
-Figure * Connection::getSecondFigure() const
+Figure * Connection::secondFigure() const
 {
   return secondFigure_;
 }
@@ -53,4 +54,12 @@ void Connection::setFirstFigure(Figure *figure)
 void Connection::setSecondFigure(Figure *figure)
 {
   secondFigure_ = figure;
+}
+
+QDataStream &operator<<(QDataStream &out, const Connection *conection)
+{
+  Logger::log("Writing to stream connection ");
+  out << conection->firstFigure()->lastEdited();
+  out << conection->secondFigure()->lastEdited();
+  return out;
 }
