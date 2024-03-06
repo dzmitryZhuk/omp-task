@@ -371,7 +371,7 @@ std::optional<Figure *> Canvas::figureUnderPoint(const QPointF &point) const
   if (!figuresUnderMouse.empty())
   {
     std::sort(figuresUnderMouse.begin(), figuresUnderMouse.end(), [](Figure * l, Figure *r) {
-      return l->getLastEdited() < r->getLastEdited();
+      return l->lastEdited() < r->lastEdited();
     });
 
     return figuresUnderMouse[figuresUnderMouse.size() - 1];
