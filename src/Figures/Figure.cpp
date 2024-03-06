@@ -1,4 +1,5 @@
 #include "Figure.h"
+#include "../Logger.h"
 
 Figure::Figure(QObject *parent)
   : QObject(parent)
@@ -48,6 +49,7 @@ quint64 Figure::getLastEdited()
 
 QDataStream &operator<<(QDataStream &out, const Figure *figure)
 {
+  Logger::log("Writing to stream figure " + figure->className());
   out << figure->className();
   out << figure->boundingRect_;
   out << figure->lastEdited_;

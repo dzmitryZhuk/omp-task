@@ -102,6 +102,7 @@ void MainWindow::openTriggered()
       in >> className;
       in >> boundingRect;
       in >> lastEdited;
+      Logger::log("Read figure " + className);
       Figure *figure;
       if (className.compare("Rectangle") == 0)
       {
