@@ -20,7 +20,6 @@ public:
   virtual ~Figure();
   virtual QString className() const = 0;
   friend QDataStream &operator<<(QDataStream &out, const Figure *figure);
-  friend QDataStream &operator>>(QDataStream &in, Figure *figure);
 
   virtual void draw(QPainter *painter) = 0;
   virtual void move(double dx, double dy) = 0;
@@ -31,7 +30,7 @@ public slots:
   virtual void setFirstPoint(const QPointF &point);
   virtual void setSecondPoint(const QPointF &point);
   virtual void setLastEdited(const quint64 &timestamp);
-  quint64 getLastEdited();
+  quint64 lastEdited();
 
 protected:
   QRectF boundingRect_;
