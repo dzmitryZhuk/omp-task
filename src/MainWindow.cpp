@@ -79,7 +79,11 @@ void MainWindow::saveTriggered()
     {
       out << item;
     }
-    // save connections
+    out << connections.size();
+    for (const auto *item : connections)
+    {
+      out << item;
+    }
   }
 }
 
@@ -92,16 +96,14 @@ void MainWindow::openTriggered()
   if (file.open(QIODevice::ReadOnly))
   {
     QDataStream in(&file);
-    decltype(figures.size()) size;
-    in >> size;
-    for (decltype(figures.size()) i = 0; i < size; i++)
+    decltype(figures.size()) sizeFigures;
+    in >> sizeFigures;
+    for (decltype(figures.size()) i = 0; i < sizeFigures; i++)
     {
       QString className;
       QRectF boundingRect;
       quint64 lastEdited;
-      in >> className;
-      in >> boundingRect;
-      in >> lastEdited;
+      in >> className >> boundingRect >> lastEdited;
       Logger::log("Read figure " + className);
       Figure *figure;
       if (className.compare("Rectangle") == 0)
@@ -119,7 +121,31 @@ void MainWindow::openTriggered()
       figure->setLastEdited(lastEdited);
       figures.push_back(figure);
     }
-    canvas_->setFigures(figures);
-    // load connections
+    
+    decltype(connections.size()) sizeConnections;
+    in >> sizeConnections;
+    for (decltype(connections.size()) i = 0; i < sizeConnections; i++)
+    {
+      quint64 firstFigureId;
+      quint64 secondFigureId;
+      in >> firstFigureId >> secondFigureId;
+      Figure *firstFigure;
+      Figure *secondFigure;
+      for (const auto &item : figures)
+      {
+        if (item->lastEdited() == firstFigureId)
+        {
+          firstFigure = item;
+        }
+        if (item->lastEdited() == secondFigureId)
+        {
+          secondFigure = item;
+        }
+      }
+      auto *connection = new Connection{firstFigure, secondFigure};
+      connections.push_back(connection);
+    }
+
+    canvas_->setFiguresAndConnections(figures, connections);
   }
 }
